@@ -93,8 +93,8 @@ AstraDriver::AstraDriver(ros::NodeHandle& n, ros::NodeHandle& pnh) :
 			}
 			shm = (char *)shmat(shmid, 0, 0);
 			while( *shm!=bootOrder);
-			 initDevice();
-			 ROS_WARN("*********** device_id %s already open device************************ ", device_id_.c_str());
+			initDevice();
+			ROS_WARN("*********** device_id %s already open device************************ ", device_id_.c_str());
 			*shm = (bootOrder+1);
 		}
 		if(  bootOrder==devnums )

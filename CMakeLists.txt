@@ -5,6 +5,8 @@ find_package(catkin REQUIRED camera_info_manager dynamic_reconfigure image_trans
 
 find_package(Boost REQUIRED COMPONENTS system thread)
 
+add_compile_options(-Wno-deprecated)
+
 option(FILTER "OB Filter library" ON)
 
 if( ${FILTER} STREQUAL "ON" )
@@ -23,7 +25,7 @@ ExternalProject_Add(astra_openni2
   CONFIGURE_COMMAND echo "no need to configure"
   #${CMAKE_CURRENT_SOURCE_DIR}/libantlr/configure --prefix=<INSTALL_DIR>
   BUILD_IN_SOURCE 1
-  BUILD_COMMAND make release FILTER=${obfilter}
+  BUILD_COMMAND ALLOW_WARNINGS=1 make release FILTER=${obfilter}
   INSTALL_DIR openni2
   INSTALL_COMMAND tar -xjf <SOURCE_DIR>/Packaging/Final/OpenNI-Linux-2.3.tar.bz2 -C <INSTALL_DIR> --strip 1 && mkdir -p <INSTALL_DIR>/include && ln -fs <INSTALL_DIR>/Include <INSTALL_DIR>/include/openni2
 )
@@ -37,7 +39,6 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES astra_wrapper
   CATKIN_DEPENDS camera_info_manager dynamic_reconfigure image_transport nodelet sensor_msgs roscpp message_runtime
-  DEPENDS libastra
 )
 
 link_directories(${CMAKE_CURRENT_BINARY_DIR}/openni2/Redist)
